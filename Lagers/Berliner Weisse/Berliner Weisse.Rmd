@@ -1,5 +1,5 @@
 ---
-title: "Berline Weisse"
+title: "Berliner Weisse"
 author: '- BB; KS -'
 date: "November 06, 2016"
 output:
