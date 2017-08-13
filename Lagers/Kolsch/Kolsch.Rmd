@@ -1,0 +1,211 @@
+---
+title: "Kolsch"
+author: '- BB; KS -'
+date: "Septmenber 15, 2015"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(knitr)
+library(dplyr)
+```
+
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+body {background-color: #FEF9E7;}
+</style>
+")
+```
+
+## Recipe
+
+Yo Kyle if you read this...I assumed we dropped the gravity from 1.060 to 1.055. We recorded ???? for the value haha. Anyways I think 1.055 is a reasonable assumption.
+
+```{r Recipe, echo=TRUE, eval=FALSE}
+recipe <- data.frame(
+  Recipe = "Kolsch",
+  Style = "Kolsch",
+  Date = "09.15.2015",
+  OG = 1.055,
+  FG = 1.010 
+)
+
+kable(recipe)
+```
+
+## Fermentables
+
+German Pils or pale malt.  Up to 20% wheat may be used, but this is quite rare in authentic versions. 
+* Going to stick with 100% Pilsen malt from Germany for sake of authenticity and simplicity. Wheat will not be necessary at this point. 
+Malt (Efficiency = 65%)
+
+* Pilsen (Best Malz) - 11.786 lbs - 34.46 ppg 
+
+```{r Fermentables, echo=TRUE, eval=FALSE}
+fermentables <- data.frame(
+  Recipe = rep("Kolsch",1),
+  Ingredients = c("Pilsen (Best Malz)"),
+  Lbs = c(11.786)
+)
+
+kable(fermentables)
+```
+
+## Hops
+
+German noble hops (Hallertau, Tettnang, Spalt or Hersbrucker).
+
+* Selected Spalt hops for floral and fruity flavor. Other hops had spicy or herbal notes, that are not ideal.
+* As of now, we're only going to use a 60 minute boil to see where the bitterness and hop flavor is. For the next brew, we may entertain the thought of using a different hop, more bitterness, and/or more flavor.
+
+* German Spalt - 4.9% AA - 1.75 oz - 60 min
+
+Kettle Boil Procedure
+
+* Boil for 90 minutes total, in order to remove DMS (gives a corn flavor)
+* Add hops 30 minutes after start of boil for a 60 minute bittering 
+
+```{r Hops, echo=TRUE, eval=FALSE}
+hops <- data.frame(
+  Recipe = rep("Kolsch",1),
+  Hop = c("German Spalt"),
+  Alpha_Acid = c(4.9), # percent
+  Weight = c(1.75), # ounces
+  Boil_Time = c(60), # min
+  IBU = c(23)
+)
+
+kable(hops)
+```
+
+## Mash
+
+Water:
+
+Water can vary from extremely soft to moderately hard.
+
+* Boston water is very soft, but has moderate alkalinity (resists acidification of mash), so we will add some calcium sulfate (gypsum), calcium chloride, and lactic acid. Will adjust chloride:sulfate ratio to accentuate maltiness. Need lactic acid because we don't want to use too much brewing salts, since those impact flavor negatively past a certain point.
+
+* Made error in total water calculation (fix formula for next time)
+* 3 g Calcium Sulfate, 4.5 g Calcium Chloride, 3 mL Lactic Acid 
+
+Mashing Procedure:
+
+Greg Noonan (New Brewing Lager Beer) recommends mash thickness of 1.68 qt/lbs. He also suggested dough-in (24 fl oz/lbs. grain) with cold tap water, acid rest at 90F, protein rest at 133F, and saccharification rest at 150F. Water quantities and mash schedule are listed below (also using recommendations from Noonan's book).
+
+Maltiness will come from decoction procedure and high attenuation (dryness) will come from low mash temperature at 150F. Some versions can have a slightly minerally or sulfury water or yeast character that accentuates the dryness and flavor balance.
+
+
+
+* Pre-measured all water volumes the day before with a wooden spoon and a sharpie
+* Dough-in - 2.21 gallons (68F)
+* Acid rest - 2.74 gallons (heat to 113F -> rest at 90F)
+    + Do water treatment while heating up acid rest, by taking a small portion of acid rest water, bringing it to boil, treating it with salts and lactic acid, and returning it to total acid rest volume
+* First Decoction - 2.43 gallons 
+    + As you bring up to boil, rest at 133F for 10 minutes, 150F for 15 minutes, and 212F for 5 minutes
+    + After 5 minutes return some of the decoction to mash, bringing temp up to 133 and resting for 15 minutes while boiling the remaining decoction
+    + Then return remaining decoction to mash, bringing up temperature to 150F and resting for 40 minutes
+        * Should note that I made error in water equation (didn't include 20% buffer on water volume)
+        * When we returned remaining decoction to mash, temperature only hit 148F and by the end was at 144F.
+* Second Decoction - 2.10 gallons
+    + After 40 minutes of saccharification rest, pull second decoction, bring to boil, boil for 10 minutes, and return to mash bringing temp to mash-out (168F)
+* Sparge water - 4.03 gallons (heat to 170F)
+
+Sparge Procedure
+
+* Vorlauf three times to set filter bed and remove microparticles, while maintaining mash liquor one inch above grain bed
+* Lauter while maintaining mash liquor one inch above grain bed, until no sparge water left
+* Should note that I made error here by lautering too fast, which caused a stuck sparge 
+* In future brews, remember to lauter much slower
+
+
+
+```{r Mash, echo=TRUE, eval=FALSE}
+mash <- data.frame(
+  Recipe = "Kolsch",
+  Mash_Thickness = 1.682529,
+  Mash_Vol = 4.95,
+  Dough_In_Temp = 68,
+  Dough_In_Vol = 2.21,
+  Acid_Rest_In_Temp = 90,
+  Acid_Rest_In_Vol = 2.74,
+  Sacc_Rest = 150,
+  # Infusion_Temp = 167, The infusion was taken over by the dough in and acid rest
+  Sparge_Vol = 4.03
+)
+
+kable(mash)
+```
+
+## Yeast
+
+A pleasant, subtle fruit aroma from fermentation (apple, cherry or pear) is acceptable, but not always present. Attenuative, clean ale yeast is preferred.
+
+* Wyeast 2565 Kolsch accentuated by high attentuation will take care of this
+* Primary fermation at 60F
+* 0.4 gallon starter from one activator packet (final pitch rate = 9.9 billion cells/liter)
+Soft, rounded palate comprising of a delicate flavor balance between soft yet attenuated malt, an almost imperceptible fruity sweetness from fermentation, and a medium-low to medium bitterness with a delicate dryness and slight pucker in the finish (but no harsh aftertaste).
+
+```{r Yeast, echo=TRUE, eval=FALSE}
+yeast <- data.frame(
+  Recipe = "Kolsch",
+  Yeast_Strain = "Wyeast 2565 Kolsch",
+  DME = 30.62, # grams golden Light DME (shooting for 1.040)
+  Gal_For_Starter = 0.15,
+  Time_For_Starter = 36 # hours before pitch
+)
+
+kable(yeast)
+```
+
+## Fermentation
+
+* Let wort and starter yeast sit in lager fridge overnight to let cool to proper temperature
+* Add yeast the next day
+* Primary ferment at 60F until gravity drops within 4 points of FG (around 1.010) which is roughly between 1-2 weeks
+* Transfer to secondary and do diacetyl rest at 64F for a day, then raise to 68F the next day
+* For the next seven days, lower the temp by 4F per day, until you reach 40F and let sit for 2 weeks
+* For the next two days, lower temp by 3F per day, until you reach 34F and lager for 4 weeks.
+* Finally, raise temperature to 60F at a pace of 4F per day and then bottle
+
+
+```{r Fermentation, echo=TRUE, eval=FALSE}
+fermentation <- data.frame(
+  Recipe = "Kolsch",
+  Temp1 = 60, Days1 = 14,
+  Temp2 = 64, Days2 = 1,
+  Temp3 = 68, Days3 = 1,
+  Temp4 = 64, Days4 = 1,
+  Temp5 = 56, Days5 = 1,
+  Temp6 = 52, Days6 = 1,
+  Temp7 = 48, Days7 = 1,
+  Temp8 = 44, Days8 = 1,
+  Temp9 = 40, Days9 = 14,
+  Temp10 = 37, Days10 = 1,
+  Temp11 = 34, Days11 = 28,
+  Temp12 = 38, Days12 = 1,
+  Temp13 = 42, Days13 = 1,
+  Temp14 = 46, Days14 = 1,
+  Temp15 = 50, Days15 = 1,
+  Temp16 = 54, Days16 = 1,
+  Temp17 = 58, Days17 = 1,
+  Temp18 = 60, Days18 = 1
+)
+
+kable(fermentation)
+```
+
+Other Notes
+
+* Starting gravity was higher than we wanted at 1.060 so we arbitrarily added some water to lower the gravity to 1.055. Probably due to several factors:
+    + Efficiency too low at 65%
+    + Unmeasured evaporation rate
+* We generally followed fermentation schedule, but weren't too strict and lagered it for 10 weeks instead of 4 weeks
+
+
+

@@ -1,0 +1,9 @@
+
+(function() {
+
+  var campaignInfo = {"metadata":{"preview":false,"version":"2.0"},"banner":{"button":{"src":"https://www.moovmanage.com/images/moovad_close_button.png?1495468244","height":32,"width":32},"url":"https://www.moovmanage.com/public_api/redirect/2259?device_id=4626\u0026nocache=1501278163","position":"bottom-centre","image":{"src":"https://attachments.moovmanage.com/images/2259/original/Pricline_CUG_Rates_boxbanner.jpg?1470957429","height":241,"max_width_frac":1.0,"id":2259,"max_height_frac":0.8,"width":455}}};
+  var banner = addMoovAdBanner(campaignInfo);
+
+  
+}());
+

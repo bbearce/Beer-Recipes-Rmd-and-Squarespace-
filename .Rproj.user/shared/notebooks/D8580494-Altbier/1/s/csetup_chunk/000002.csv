@@ -1,0 +1,8 @@
+"0","library(rmarkdown)"
+"0","library(knitr)"
+"0","library(dplyr)"
+"0","print(getwd())"
+"1","[1]"
+"1"," ""/home/bbearce/Documents/Beer - Recipes/Lagers/Altbier"""
+"1","
+"

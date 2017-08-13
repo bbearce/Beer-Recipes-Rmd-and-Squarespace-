@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"Altbier\"\nauthor: '- BB; KS -'\ndate: \"February 20, 2017\"\noutput:\n  html_document:\n    toc: true\n    toc_depth: 2\n---\n\n```{r setup, include=FALSE}\nlibrary(rmarkdown)\nlibrary(knitr)\nlibrary(dplyr)\nprint(getwd())\n```\n\n```{r results=\"asis\", echo = FALSE}\ncat(\"\n<style>\nbody {background-color: #FEF9E7;}\n</style>\n\")\n```\n\nData collected by Roy Daniels (Designing Great Beers) about German breweries in Dusseldorf:\n\n* OG = 1.047\n* FG = 1.008 - 1.010\n* BU = 33-48, but closer to 33\n* BU:GU = [min .56, avg .70, max 1.00]\n\nStyle notes from Daniels:\n\n* High attentuation, similar to Kolsch\n* Hop bitterness only, no hop aroma, very little hop flavor\n* Deep, copper color achieved through specialty malts, namely black malt\n\nNote: Diebels Alt uses 10% munich, 90% pilsener\n\n2nd round NHC contestants all used crystal malts but if you want to be authentic, try it without them. Average grain bill from NHC below. Note: very similar to recipe found in Brewing Classic Styles, which we've used as a reference before.\n\n* Pilsen - 75%\n* Munich - 19%\n* CaraMunich - 5%\n* Carafa - 1%\n\n## Recipe\n```{r Recipe, echo= FALSE}\nRecipe = 'Altbier1'\n\nrecipe <- data.frame(\n  Recipe = Recipe,\n  Style = \"Altbier\",\n  Date = \"02.20.2017\",\n  OG = 1.051,\n  FG = 1.008 \n)\n\nkable(recipe)\n```\n\n## Fermentables\n```{r Fermentables, echo= FALSE}\nfermentables <- data.frame(\n  Recipe = rep(Recipe,3),\n  Ingredients = c(\"Pilzen 1.7 L\",\"Munich Dark 15 L\",\"Carafa II 430 L\"),\n  Lbs = c(7.75, 2.0, 0.15)\n)\n\nkable(fermentables)\n```\n\n![Recipe_Fermentables_Spreadsheet](./recipe_fermentables.png)\n\n#Hops\n\nSpalt hops is what all the commercial brewers use in Dusseldorf and Daniels highly recommends it for the style. We have used it before in a Kolsch and I loved it.\n\n```{r Hops, echo= FALSE}\nhops <- data.frame(\n  Recipe = Recipe,\n  Hop = c(\"Spalt\"),\n  Weight = c(4.35),\n  Boil_Time = c(60),\n  IBU = c(34)\n)\n\nkable(hops)\n```\n\n# Mash\n\nMash around 145-149 to achieve a high attenuation.\n\n```{r Mash, echo= FALSE}\nmash <- data.frame(\n  Recipe = Recipe,\n  Mash_Thickness = 1.68,\n  Sacc_Rest = 147,\n  Mash_Duration = 90,\n  Strike_Water_Temp = 156,\n  Mash_Vol = 4.16,\n  Sparge_Vol = 4.91\n)\n\nkable(mash)\n```\n\n# Yeast\n\n```{r Yeast, echo= FALSE}\nyeast <- data.frame(\n  Recipe = Recipe,\n  Yeast_Strain = \"Safale K-97 Dry Ale\",\n  Attenuation = 84,\n  Initial_Cell_Count_Billions = NA,\n  Pitched_Cells_Billions = 317,\n  Liters_For_Starter = NA,\n  Time_For_Starter = NA\n)\n\nkable(yeast)\n```\n\n![Recipe_Fermentables_Spreadsheet](./yeast_hops_mash.png)\n\n# Fermentation\n\nWe are a bit rushed for time, so we are gonna try to keep fermentation within 5-6 weeks.\n\n```{r Fermentation, echo= FALSE}\nfermentation <- data.frame(\n  Recipe = Recipe,\n  Temp1 = 64, Days1 = 7,\n  Temp2 = 72, Days2 = 1,\n  Temp3 = 64, Days3 = 6,\n  Temp4 = 60, Days4 = 1,\n  Temp5 = 55, Days5 = 1,\n  Temp6 = 50, Days6 = 1,\n  Temp7 = 44, Days7 = 10,\n  Temp8 = 50, Days8 = 1,\n  Temp9 = 55, Days9 = 1,\n  Temp10 = 60, Days10 = 1,\n  Temp11 = 64, Days11 = 1,\n  Temp12 = 68, Days12 = 1\n)\n\nkable(fermentation)\n```\n\nNote: Bottle at room temp for 2 weeks and serve\n\n# Water Chemistry\n\n![Recipe_Fermentables_Spreadsheet](./water_chemistry.png)\n\nFinal Thoughts:\n \nIn the end we made some modifications based off gut instincts. Below is the recipe used. Brew day went very well and everything went according to plan. \n\n\n",
+    "created" : 1502656997153.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3875576355",
+    "id" : "3536E55B",
+    "lastKnownWriteTime" : 1502657851,
+    "last_content_update" : 1502658148859,
+    "path" : "~/Documents/Beer - Recipes/Lagers/Altbier/Altbier.Rmd",
+    "project_path" : "Lagers/Altbier/Altbier.Rmd",
+    "properties" : {
+        "last_setup_crc32" : "5991C1EE43edb598"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

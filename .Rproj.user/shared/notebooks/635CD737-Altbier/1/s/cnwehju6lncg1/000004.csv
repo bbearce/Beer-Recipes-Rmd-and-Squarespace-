@@ -1,0 +1,8 @@
+"0","hops <- data.frame("
+"0","  Recipe = Recipe,"
+"0","  Hop = c(""Spalt""),"
+"0","  Weight = c(4.35),"
+"0","  Boil_Time = c(60),"
+"0","  IBU = c(34)"
+"0",")"
+"0","kable(hops)"
