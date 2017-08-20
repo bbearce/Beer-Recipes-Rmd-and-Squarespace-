@@ -1,0 +1,76 @@
+---
+title: "Scottish 60/-"
+author: '- BB; KS -'
+date: "June 5th, 2016"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(knitr)
+library(dplyr)
+```
+
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+body {background-color: #FEF9E7;}
+</style>
+")
+```
+
+CONSTANTS
+
+* Evaporation rate = 10%
+* Boil time = 60 minutes
+* Efficiency = 73.5%
+* Boil kettle dead space = 0.125 gallons
+* Lauter tun dead space = 0.125 gallons
+* Fermentation loss = 0.125 gallons
+* Target gravity = 1.0325 
+
+MALT
+
+* Golden Promise (Thomas Fawcett, 2.7° L) - 5.8 lbs.
+* Victory (Briess, 28° L) - 0.23 lbs.
+* Crystal (Great Western, 75° L) - 0.07 lbs. 
+* Roasted Barley (Thomas Fawcett, 440° L) - 0.05 lbs.
+
+HOPS
+
+* Fuggle (UK) - 4.1% AA - 1 oz - 30 min boil (14 IBU) 
+* Hallertau (German) - 2.5% AA - 0.5 oz - dry hop (0 IBU)
+* East Kent Goldings (UK) - 4.5% AA - 0.5 oz - dry hop (0 IBU)
+
+WATER
+
+* Mash thickness = 1.25 qt/lbs
+* Infusion water to 155F sacch. rest = 1.92 gallons @ 169 F
+* No brewing salts or acids necessary
+* Infusion water (mash-out) = 1.12 gallons @ 212 F
+* Spare water = 4.75 gallons @ 180F
+
+MASH SCHEDULE
+
+* 155 F for 75 minutes (we meant to do only 60 minutes)
+* 168 F mash-out
+
+YEAST
+
+* Yeast 1728, 1 pack = 100 billion cells
+* Pitched directly into cooled wort @ 68 F
+
+NOTES
+
+* We ended up with EXACTLY five gallons of wort at 1.035 OG 
+* Keep brewing constants as they are! We hit the holy grail on this one!
+
+FERMENTATION
+
+* Fermenting in basement in beginning of June. Hopefully it doesn't get too hot out there....
+* Primary ferment one week
+* Transfer, add dry hops, and secondary for two weeks
+* Bottle for one week

@@ -1,0 +1,39 @@
+---
+title: "Saison"
+author: '- BB; KS -'
+date: "July 13, 2017"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(knitr)
+library(dplyr)
+```
+
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+body {background-color: #FEF9E7;}
+</style>
+")
+```
+
+TECH SPECS
+
+* [Inkbird Itc-308 Digital Temperature Controller](https://www.amazon.com/gp/product/B011296704/ref=oh_aui_detailpage_o03_s00?ie=UTF8&psc=1)
+* [Zoo Med Repti Therm Under Tank Heater](https://www.amazon.com/gp/product/B0002AQCLO/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B0002AQCL4&linkCode=as2&tag=birdingninja-20&linkId=KD3LQQCUIAKX4GWM&th=1)
+* A regular, shitty, no-frills refrigerator
+
+FERMENTATION SCHEDULE
+
+1. Brewed
+2. Soured for two days using just reptile pad (two days was too sour)
+3. Boiled hops and pitched yeast at 68
+4. 3 days later started bumping temp up 1 degree/day until 76 (should have done immediately)
+5. Held at 76 for a week 
+6. Brought back down to 71 using 1 degree/day
+7. Bottle

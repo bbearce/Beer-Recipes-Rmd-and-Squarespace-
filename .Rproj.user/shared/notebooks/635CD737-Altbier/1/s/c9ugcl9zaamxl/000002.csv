@@ -1,6 +1,0 @@
-"0","fermentables <- data.frame("
-"0","  Recipe = rep(Recipe,3),"
-"0","  Ingredients = c(""Pilzen 1.7 L"",""Munich Dark 15 L"",""Carafa II 430 L""),"
-"0","  Lbs = c(7.75, 2.0, 0.15)"
-"0",")"
-"0","kable(fermentables)"

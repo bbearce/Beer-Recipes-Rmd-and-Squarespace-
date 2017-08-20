@@ -1,0 +1,78 @@
+---
+title: "Porter"
+author: '- BB; KS -'
+date: "December 31, 2015"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(knitr)
+library(dplyr)
+```
+
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+body {background-color: #FEF9E7;}
+</style>
+")
+```
+
+QUESTIONS:
+
+1. The mash method utilized a maltose rest at 140F for 40 minutes, followed by a slow rise in temperature (over 15 minutes) to the dextrinization rest at 158F for 15 minutes. Can you taste the impact of this? What is the body/attenuation like? 
+
+2. How pronounced is the biscuit? Describe the caramel sweetness. Do you detect the presence of brown malt? Describe the roast character; does it need more or less? There are three major flavors (biscuit, caramel, chocolate); what percentage of the total flavor profile would you attribute to each of the three flavors? Below is a list of the actual percentages (by weight) of the grist and the flavor components of each malt.
+    + Maris Otter (73%) - biscuit, malt
+    + Crystal 60 (12%) - sweet, pronounced caramel
+    + Brown Malt (8%) - lends dryness and a touch of cocoa, roast
+    + Chocolate Malt (7%) - dark roast sweetnees
+    
+3. You used Northern Brewer hops both for a 60 min boil and a 15 min boil. Flavor profile is described as "medium intensity, pine and mint characteristics". Can you identify the pine and mint? How is the balance between sweet and bitter? With a focus on the hops, is the aroma different than the flavor? 
+
+ANSWERS:
+
+1. The beer has a observable lack of body, but this could be attributed to either (1) improper balance of the base, caramel, and roasted malts or (2) the mash method. I think the next recipe would benefit from an increase in Crystal Malt and a decrease in Maris Otter.
+
+2. The biscuit is subtle, at best; however, the malt backbone is fantastic. There is a lack of body that may make the caramel hard to perceive. In general, its presence is subtle. The roast character is pleasant. I think it needs more caramel sweetness to mingle with.  If I were to attribute a percentage to each main malt flavor profile I would say the beer is 50% biscuit, 10% caramel, and 40% chocolate.
+
+
+Yeast Starter
+
+* 0.165 gallons water
+* 66.6 grams Golden Light DME
+* Wyeast 1028 London Ale
+
+Malt
+
+* Maris Otter - 7.37 lbs
+* Crystal 60 - 1.25 lbs
+* Brown Malt - 0.77 lbs
+* Chocolate Malt - 0.67 lbs
+
+Water
+
+* Dough-in - 0.94 gallons (82 F)
+* Saccharification - 2.52 gallons (140F -> 158F -> 168F)
+* Sparge - 4.88 gallons (170F)
+
+Hops
+
+* Nortern Brewer (U.S.) - 7% AA - 1 oz - 60 min
+* Nortern Brewer (U.S.) - 7% AA - 0.5 oz - 15 min
+ 
+
+Process
+
+Dough-in water wasn't very cold (82F) 
+Heat up 2.52 gallons to 202F and poured it in via small steps, where we would pour some, stir, measure temp, and repeat. Maybe we took too long with this process because we only got the mash temp up to 140F, when it was supposed to go to 153!!!
+To correct for this error, we mashed at 140F for 40 minutes and then poured all the mash (grain and wort) into the boiling pot, which we brought up to 158F (which took 15 minutes) and held for 15 more minutes. 
+Afterwards, we decided to just heat the mash to mash-out (168F) directly with the stove, instead of adding hot water to it. 
+With both the mash and sparge water resting near 170F, we vorlaufed three times, until no more microparticles came into the pot we were suctioning into. Afterwards, I started lautering the wort while Ben simultaneously poured clean sparge water into the mash tun, in order to keep the water level always an inch above the grain bed. It should be noted that this process worked better than ever before! The key was never allowing the drain handle to be turned more than 45 degrees from the OFF position (aka a gradual lauter). 
+The rest of the process continued as normal. We got kettle to a boil, added hops, chilled the wort, whirlpooled, transferred to bucket, and put in the lager fridge (65F) with the yeast starter.
+Next step will be to add yeast starter to bucket when Ben gets home from work (roughly 48 hours after we started the yeast!)
+We'll ferment for 2 weeks, transfer to secondary, ferment for another week, transfer to bottles, and we'll be drinking by October 11th.
