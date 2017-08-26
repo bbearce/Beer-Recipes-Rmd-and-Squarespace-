@@ -17,7 +17,7 @@ library(dplyr)
 ```{r results="asis", echo = FALSE}
 cat("
 <style>
-body {background-color: #FEF9E7;}
+body {background-color: #FFFFFF;}
 </style>
 ")
 ```
