@@ -51,7 +51,7 @@ batch_size = 5 # Gal
 * Lauter Tun Dead Space = 0.125 Gallons   
 * Fermentation Loss = 1.0325 Gallons  
 
-\* Small Note: *we will use math mainly from "Designing Great Beers" by Ray Daniels as it is intuitive and easy to follow for the modern day home brewer.*
+Small Note: *we will use math mainly from "Designing Great Beers" by Ray Daniels as it is intuitive and easy to follow for the modern day home brewer.*
 
 #Our Recipe:
 
@@ -182,7 +182,7 @@ kable(hops[,2:6])
 
 ## Mash
 
-Two sources say this about the saccharification rest temperature:
+8 oz Pecans --start with halves soaked overnight in salt water(to promote enzymes that improve flavor), slow roasted till dry, soaked overnight in vodka(to remove oils), slow roasted till dry, break up into quarters, leave over night, slow roast until barely starting to smoke, and then remove from oven, then add to grain bag and start wort. 45 min mashing.
 
 - [Dunkelweissen Mash Details](https://www.northernbrewer.com/documentation/allgrain/AG-Dunkelweizen.pdf)
 
@@ -580,11 +580,10 @@ yeast <- data.frame(
 predicted_fg <- predicted_og-(yeast$Attenuation/100)*(predicted_og-1)
 predicted_abv <- (1.05/0.79)*((predicted_og-predicted_fg)/predicted_fg)*100
 
-print(paste("Predicted ABV:", predicted_abv))
-
-kable(yeast)
+kable(yeast[,2:7])
 ```
 
+<strong>Predicted ABV:</strong> `r predicted_abv`
 
 ```{r Code to solve for starter volume needed, eval=FALSE, echo=FALSE}
 # Code to solve for starter volume needed
@@ -600,20 +599,15 @@ I have some code that will bootleg this calculation and or some rules of thumb f
 fermentation <- data.frame(
   recipe_id = 1,
   Temp1 = 62,
-  Days1 = 7,
-  Temp2 = 70,
-  Days2 = 7,
-  Temp3 = 60,
-  Days3 = 7,
-  Temp4 = 60,
-  Days4 = 7
+  Days1 = 28
 )
 
 kable(fermentation)
 ```
 
+Ferment at 62 °F (17 °C) until the beer attenuates fully. With healthy yeast, fermentation should be complete in a week, but don't rush it. The cooler than average ale fermentation temperature can extend the time it takes for complete attenuation. Rack to a keg and force carbonate or rack to a bottling bucket, add priming sugar, and bottle. Target a carbonation level of 2.5 to 3 volumes. [Fermentation source](https://byo.com/bock/item/1964-dunkelweizen-style-profile)
 
-
+## Brew Day Schedule
 
 
 
