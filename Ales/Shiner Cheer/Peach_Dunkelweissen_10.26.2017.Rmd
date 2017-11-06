@@ -605,7 +605,7 @@ fermentation <- data.frame(
 kable(fermentation[,2:3])
 ```
 
-Ferment at 62 째F (17 째C) until the beer attenuates fully. With healthy yeast, fermentation should be complete in a week, but don't rush it. The cooler than average ale fermentation temperature can extend the time it takes for complete attenuation. Rack to a keg and force carbonate or rack to a bottling bucket, add priming sugar, and bottle. Target a carbonation level of 2.5 to 3 volumes. [Fermentation source](https://byo.com/bock/item/1964-dunkelweizen-style-profile)
+Ferment at 62 캟 (17 캜) until the beer attenuates fully. With healthy yeast, fermentation should be complete in a week, but don't rush it. The cooler than average ale fermentation temperature can extend the time it takes for complete attenuation. Rack to a keg and force carbonate or rack to a bottling bucket, add priming sugar, and bottle. Target a carbonation level of 2.5 to 3 volumes. [Fermentation source](https://byo.com/bock/item/1964-dunkelweizen-style-profile)
 
 * Note: [Hydration Instructions](http://howtobrew.com/book/section-1/yeast/preparing-yeast-and-yeast-starters)
 
@@ -623,10 +623,10 @@ Ferment at 62 째F (17 째C) until the beer attenuates fully. With healthy yeast, 
 * For the next 30-45 minutes bring to a boil. Once the wort is a 212 degrees F, set 60 minute timer. 
 * Add the first hop addition (`r hops$Hop[1]`) at the beginning of the boil. Begin to hydrate the yeast.
 * Re-hydration instructions:
-  + Put 1 cup of warm (95-105F, 35-40C) boiled water into a sanitized jar and stir in the yeast. Cover with Saran Wrap and wait 15 minutes. 
-  + "Proof" the yeast by adding one teaspoon of extract or sugar that has been boiled in a small amount of water. Allow the sugar solution to cool before adding it to the jar.
-  + Cover and place in a warm area out of direct sunlight.
-  + After 30 minutes or so the yeast should be visibly churning and/or foaming, and is ready to pitch. 
+    + Put 1 cup of warm (95-105F, 35-40C) boiled water into a sanitized jar and stir in the yeast. Cover with Saran Wrap and wait 15 minutes. 
+    + "Proof" the yeast by adding one teaspoon of extract or sugar that has been boiled in a small amount of water. Allow the sugar solution to cool before adding it to the jar.
+    + Cover and place in a warm area out of direct sunlight.
+    + After 30 minutes or so the yeast should be visibly churning and/or foaming, and is ready to pitch. 
 * After 45 minutes add the second hop addition (`r hops$Hop[2]`). Finsh the boil in 15 minutes for a full 60 minute boil.
 * Gather sanitation and prepare buckets.
 * Yeast should be foamy. It is ready but we need to cool the wort prior to pitching.
