@@ -49,7 +49,7 @@ batch_size = 7 # Gal
 * Mash Efficiency = 73.5%  
 * Boil Kettle Dead Space = 0.125 Gallons  
 * Lauter Tun Dead Space = 0.125 Gallons   
-* Fermentation Loss = 1.0325 Gallons  
+* Fermentation Loss = 0.25 Gallons  
 
 Small Note: *we will use math mainly from "Designing Great Beers" by Ray Daniels as it is intuitive and easy to follow for the modern day home brewer.*
 
@@ -128,8 +128,8 @@ hops <- data.frame(
   recipe_id = rep(1,2),
   Hop = c("Brewer's Gold","Brewer's Gold"),
   Hop_Type = c("pellet", "pellet"),
-  Alpha_Acid_Percent = c(9.5/100,9.5/100), #percent stored as decimal
-  Weight_Oz = 1.4*c(.5,.5),
+  Alpha_Acid_Percent = c(8.5/100,8.5/100), #percent stored as decimal
+  Weight_Oz = c(.5,.5)*(9.5/8.5)*1.4,
   Boil_Time = c(60,15)
 )
 
@@ -258,8 +258,7 @@ GA <- 0.6 # https://byo.com/bock/item/410-calculating-water-usage-advanced-brewi
 # Graint Temp
 GT <- 70
 # Target Mash Temp
-TMT <- 149 # While 149 is our first temp, the mash out vol will be based on our second temp
-TMT2 <- 158# Second mash temp
+TMT <- 153
 # Mash Duration
 MD <- 60
 
@@ -275,7 +274,7 @@ SV = PBV - VFR
 # Infusion temperature
 IT = (0.2/MT)*(TMT-GT) + TMT
 # Mash Out Volume
-MOV = ( (170 - TMT2)*(0.2*GB + MV) )/(212 - 170)  #------ TMT2 IS BEING USED...ADJUST ACCORDINGLY ------#
+MOV = ( (170 - TMT)*((0.2*GB) + (MV*4)) )/(4*(212 - 170))  
 # Sparge volume post mash out
 SVPMO = SV - MOV # May or may not be necessary; This is what is left of SV if we mash out with MOV
                  # We could just not pour in all of MOV and just sparge slowly with all of SV
@@ -300,9 +299,8 @@ mash <- data.frame(
 ```
 
 <strong>Mash Thickness:</strong> `r MT`  
-<strong>Sacc Rest Temp1:</strong> `r TMT`  
-<strong>Sacc Rest Temp2:</strong> `r TMT2`  
-<strong>Mash Duration:</strong> Two temps at 30 min each for a total of: `r MD` min  
+<strong>Sacc Rest Temp:</strong> `r TMT`  
+<strong>Mash Duration:</strong> `r MD` min  
 <strong>Initial Grain Temp:</strong> `r GT`  
 <strong>Infusion Temp:</strong> `r IT`  
 <strong>Mash Volume (Gal):</strong> `r MV`  
@@ -605,33 +603,40 @@ fermentation <- data.frame(
 kable(fermentation[,2:3])
 ```
 
-Ferment at 62 °F (17 °C) until the beer attenuates fully. With healthy yeast, fermentation should be complete in a week, but don't rush it. The cooler than average ale fermentation temperature can extend the time it takes for complete attenuation. Rack to a keg and force carbonate or rack to a bottling bucket, add priming sugar, and bottle. Target a carbonation level of 2.5 to 3 volumes. [Fermentation source](https://byo.com/bock/item/1964-dunkelweizen-style-profile)
+Ferment at 62 ?F (17 ?C) until the beer attenuates fully. With healthy yeast, fermentation should be complete in a week, but don't rush it. The cooler than average ale fermentation temperature can extend the time it takes for complete attenuation. Rack to a keg and force carbonate or rack to a bottling bucket, add priming sugar, and bottle. Target a carbonation level of 2.5 to 3 volumes. [Fermentation source](https://byo.com/bock/item/1964-dunkelweizen-style-profile)
 
-* Note: [Hydration Instructions](http://howtobrew.com/book/section-1/yeast/preparing-yeast-and-yeast-starters)
+<!--* Note: [Hydration Instructions](http://howtobrew.com/book/section-1/yeast/preparing-yeast-and-yeast-starters)-->
+* Note: [Hydration Instructions](http://www.fermentis.com/wp-content/uploads/2016/12/SafAle-US-053.pdf)  
 
 ## Brew Day Schedule
 
-* Heat `r MV` Gallons up to `r 161.64` degrees Fahrenheit.
-* Slowly pour the grains into the water as to avoid clumping.
-* Start to raise `r SV` to 170 degrees F. Separate the `r SV` gallons into the mash out volume (`r MOV`) to be brought to a boil, and rinse volume (`r SVPMO`), which should reach 170.
-* Check that the mash temp is `r TMT`. Hold here for 25 minutes. Then turn the burners on and raise to `r TMT2`.
-* Hopefully the mash temperature raise only takes 5 minutes. Hold at `r TMT2` for 30 minutes. 
-* Our total sparge volume is the `r SV` gallons. `r MOV` gallons of that are for mash out. Hopefully that is close to 212 degrees by now, and pour in. 
+* Heat `r MV` Gallons up to `r IT` degrees Fahrenheit in Kettle pot.
+* Add 5 g Gypsum, 4 g Calcium Chloride, 3 mL Lactic Acid to strike water.
+* Slowly pour the grains into the water as to avoid clumping. Maintain +6 degrees F above mash temp (`r TMT` F) and then pour mash volume into mash tun. Place roasted pecans in grain bag and submerge the pecans in the mash. Check that the mash temp is `r TMT`. Hold here for 60 minutes. 
+* Check mash temp after 20 minutes and if necessary, do a mini-decoction to bring temp back to `r TMT` F.
+* While the grain mashes, measure `r MOV` gallons in lobster pot for the mash out volume. Begin heating to a boil.
+* While the grain mashes, measure `r SVPMO` gallons in kettle pot for the rinse volume. Begin heating to 170 F.
+* After mash completes, add mash out volume (`r MOV` gal) to mash tun. Hold at 170F for 10 minutes. 
 * Now the mash should be at 170 degrees. We need to vorlauf. Be careful to pour gently and cycle the wort till it runs clean.  
 * Now take the remaining `r SVPMO` gallons (rinse sparge) and slowly pour through the mash bed.
-* Once fully drained, discard grains. 
-* For the next 30-45 minutes bring to a boil. Once the wort is a 212 degrees F, set 60 minute timer. 
-* Add the first hop addition (`r hops$Hop[1]`) at the beginning of the boil. Begin to hydrate the yeast.
-* Re-hydration instructions:
-  + Put 1 cup of warm (95-105F, 35-40C) boiled water into a sanitized jar and stir in the yeast. Cover with Saran Wrap and wait 15 minutes. 
-  + "Proof" the yeast by adding one teaspoon of extract or sugar that has been boiled in a small amount of water. Allow the sugar solution to cool before adding it to the jar.
-  + Cover and place in a warm area out of direct sunlight.
-  + After 30 minutes or so the yeast should be visibly churning and/or foaming, and is ready to pitch. 
-* After 45 minutes add the second hop addition (`r hops$Hop[2]`). Finsh the boil in 15 minutes for a full 60 minute boil.
-* Gather sanitation and prepare buckets.
-* Yeast should be foamy. It is ready but we need to cool the wort prior to pitching.
-* Cool wort till it reaches `r fermentation$Temp1` degrees F. Transfer to bucket and take OG reading.
-* Pitch yeast and put beer in fridge for 28 days at `r fermentation$Temp1` degrees F.
+* Once fully drained, discard grains and set aside pecans (don't discard). 
+* For the next 30-45 minutes bring to a boil. Once the wort is at 212 degrees F, set 30 minute timer and add the first hop addition (`r hops$Hop[1]`) at the beginning of the boil
+* When timer goes off, set 15 minute timer and re-hydrate yeast:
+    + Sprinkle the yeast in minimum 10 times its weight of sterile water or wort at 25 to 29°C (77°F to 84°F).
+    + Total cell count = `r cell_density/1e9` billion (200 from pack 1, 139.94 from pack 2) 
+    + Total cell weight = (139.94*11.5/200)+11.5 = 19.55 grams
+    + 10 times its weight in water = 195.5 mL
+* When timer goes off, set 5 minute timer and add the second hop addition (`r hops$Hop[2]`). 
+* When timer goes off, set 10 minute timer, add Irish moss to boil, and tie pecan bag to side of kettle submerging them in boiling wort.
+* Immediately gather sanitation and prepare buckets.
+* When boil finishes, 
+    + Remove pecans and transfer to a sanitized grain bag and place in fermentation bucket.
+    + Gently stir yeast 
+    + Cool wort till it reaches `r fermentation$Temp1` degrees F. Transfer to bucket and take OG reading.
+* Pitch yeast and put beer in fridge for 14 days at `r fermentation$Temp1` degrees F.
+* After 14 days, add purreed peaches and pecan vodka extract.
+* After 7 days, taste and decide if using peach extract is necessary. Bottle. 
+* After 7 days, drink.
 
 
 
