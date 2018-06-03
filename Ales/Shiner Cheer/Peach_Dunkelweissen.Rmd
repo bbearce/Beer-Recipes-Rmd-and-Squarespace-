@@ -40,7 +40,7 @@ equip_loss = 0.125 # Gal
 fermentation_loss = 0.25 # 1.0325 # Gal...I know we "documented" this, but it's hard to believe
 water_shrinkage = 4 # Percent
 
-batch_size = 5 # Gal
+batch_size = 7 # Gal
 ```
 
 #Kitchen Constants:
@@ -84,7 +84,7 @@ fermentables <- data.frame(
              "Honey Malt"),
   EZ_Water_Code = c(7,6,9,11,7,4),
   SRM = c(2,2,20,400,30,25),
-  Lbs = c(7, 2.5, 1, 0.5, 0.5, 0.75),
+  Lbs = 1.4*c(7, 2.5, 1, 0.5, 0.5, 0.75),
   Potential_SG = c(1.040,1.037,1.035,1.030,1.035,1.034)
   )
 
@@ -129,7 +129,7 @@ hops <- data.frame(
   Hop = c("Brewer's Gold","Brewer's Gold"),
   Hop_Type = c("pellet", "pellet"),
   Alpha_Acid_Percent = c(9.5/100,9.5/100), #percent stored as decimal
-  Weight_Oz = c(.5,.5),
+  Weight_Oz = 1.4*c(.5,.5),
   Boil_Time = c(60,15)
 )
 

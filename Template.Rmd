@@ -1,0 +1,497 @@
+---
+title: "Untitled"
+author: 'Authors: BB, KS'
+date: Sys.Date()
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(knitr)
+library(dplyr)
+```
+
+```{r results="asis", echo = FALSE}
+cat("
+<style>
+body {background-color: #FFFFFF;}
+</style>
+")
+```
+
+#Style Summary:
+
+* OG: 1.035 - 1.040  
+* FG: 1.010 - 1.015  
+* IBUs: 10 - 25  
+* SRM: 9 - 17   
+* ABV: 3.2 - 3.9%  
+
+More details can be found here: [BJCP Style Details](https://www.bjcp.org/2008styles/style09.php)  
+
+A small excerpt from the source about this style:    
+*"Overall Impression: Cleanly malty with a drying finish, perhaps a few esters, and on occasion a faint bit of peaty earthiness (smoke). Most beers finish fairly dry considering their relatively sweet palate, and as such have a different balance than strong Scotch ales."* - BJCP -
+
+```{r Kitchen Constants, echo = FALSE}
+evap_rate = 10 # Percent
+mash_eff = 73.5 # Percent
+trub_loss = 0.125 # Gal
+water_shrinkage = 4 # Percent
+equip_loss = 0.125 # Gal
+fermentation_loss = 0.25 # 1.0325 # Gal...I know we "documented" this, but it's hard to believe
+batch_size = 5 # Gal
+```
+
+#Kitchen Constants:
+
+* Evaporation Rate = `r evap_rate`% 
+* Mash Efficiency = `r mash_eff`%  
+* Boil Kettle Dead Space = `r trub_loss` Gallons  
+* Lauter Tun Dead Space = `r equip_loss` Gallons   
+* Fermentation Loss = `r fermentation_loss` Gallons  
+
+\* Small Note: *we will use math mainly from "Designing Great Beers" by Ray Daniels as it is intuitive and easy to follow for the modern day home brewer.*
+
+
+```{r Recipe, echo= FALSE}
+recipe <- data.frame(
+  Recipe = "Untitled",
+  Style = "Untitled",
+  Date = Sys.Date(),
+  OG = 1.050,
+  FG = 1.010 
+)
+
+kable(recipe)
+```
+
+## Fermentables
+
+[Link to Potential Gravity From Grain Values](http://beersmith.com/Grains/Grains/GrainList.htm)
+
+```{r Fermentables, echo= FALSE}
+Ing1 <- data.frame(Grains = "British Pale Ale Malt (3.5 °L)", 
+                   Lbs = 6.5, 
+                   Potential_SG = 1.036,
+                   EZ_Water_Code = 2,
+                   SRM = 0.0
+                   )
+Ing2 <- data.frame(Grains = "British Pale Ale Malt (3.5 °L)", 
+                   Lbs = 6.5, 
+                   Potential_SG = 1.036,
+                   EZ_Water_Code = 2,
+                   SRM = 0.0
+                   )
+
+fermentables <- rbind(Ing1,Ing2)
+tot_Lbs <- sum(Grains$Lbs)
+
+fermentables <- mutate(fermentables, Percent = Lbs/tot_Lbs)
+
+kable(fermentables)
+```
+
+
+Theoretical OG from this is:
+
+```{r Gravity Equation, echo = TRUE, eval = FALSE}
+# We still need to recreate the static data database
+# For now we will just use raw values I looked up
+
+Ingredient_Gravity = lbs_needed * Gravity_per_lb_malt * Mash Efficiency
+```
+
+```{r OG Calculation, echo = TRUE, eval = TRUE}
+# Don't forget mash efficiency
+fermentables <- fermentables %>% mutate(Ingredient_Gravity = Lbs*(Potential_SG-1)*1000*(mash_eff/100))
+
+# Predicted OG
+predicted_og <- 1+(sum(fermentables$Ingredient_Gravity)/batch_size/1000)
+print(paste("Predicted OG:",predicted_og))
+
+```
+
+## Hops
+```{r Hops, echo= FALSE}
+
+hop1 <- data.frame(Hop = "East Kent Golding", Hop_Type = "pellet", Alpha_Acid_Percent = 0.055, Weight_Oz = 0.75, Boil_Time = 60)
+hop2 <- data.frame(Hop = "East Kent Golding", Hop_Type = "pellet", Alpha_Acid_Percent = 0.055, Weight_Oz = 0.75, Boil_Time = 60)
+
+hops <- rbind(hop1,hop2)
+
+# values from Designing Great Beers pg. 80
+
+Utilization_Table <- data.frame(
+  boil_time = c(0,9,19,29,44,59,74,75),
+  whole_hop = c(0,5,12,15,19,22,24,27)/100, #percent stored as decimal
+  pellet_hop = c(0,6,15,19,24,27,30,34)/100
+)
+
+# calc utilization column
+# ranges are {0, 1-9, 10-19, 20-29, 30-44, 45-59, 60-74, 75+}
+findUtilization <- function(boilTime = 0, hopType = "pellet"){
+
+  BT <- boilTime
+  if(BT > 75){
+  boil_time_bin <- 75
+  }else{
+  boil_time_bin <- filter(Utilization_Table, boil_time >= BT) %>% select(boil_time) %>% min()
+  }  
+  
+  if(hopType == "pellet"){
+    Util <- filter(Utilization_Table, boil_time == boil_time_bin) %>% select(pellet_hop)
+  }else{
+    Util <- filter(Utilization_Table, boil_time == boil_time_bin) %>% select(whole_hop)
+  }
+  
+  return(as.numeric(Util))
+  
+}
+
+# Vectorize findUtilization: https://stackoverflow.com/questions/21818181/applying-a-function-to-every-row-of-a-table-using-dplyr
+# Apparently to define a new column that depends on 1 or more other columns sent into a custom function with values passed in a row by row fashion, then you need a vectorized function.
+
+FindUtil <- Vectorize(findUtilization, vectorize.args = c("boilTime", "hopType"))
+hops <- mutate(hops, Utilization = FindUtil(Boil_Time, Hop_Type))
+
+# Calculate any change to IBU yeild constant Cgravity which represents correction
+# for worts that have a gravity above 1.050.
+
+Cgravity <- if_else(predicted_og < 1.050, 1, 1 + (predicted_og - 1.050)/0.2)
+
+hops <- hops %>% mutate(IBU = (Weight_Oz)*(Utilization)*(Alpha_Acid_Percent)*7489 / ((batch_size)*(Cgravity)) )
+
+kable(hops)
+
+print(paste("Total IBU:", sum(hops$IBU)))
+
+```
+
+## Mash
+
+```{r Theoretical Values, echo=TRUE, eval=FALSE}
+MV = Mash Volume [Gal]   ;EL = Equip Loss [Gal]          ;WS = Wort Shrinkage [%]
+BS = Batch Size [Gal]    ;MT = Mash Thickness [Qts/Lbs]  ;GA = Grain Absorption [Qts/Lbs]
+GB = Grain Bill [Lbs]    ;ST = Strike Temp [F]           ;ER = Evap Rate [%/hr]
+BT = Boil Time [Min]     ;GT = Grain Temp [F]            ;VFR = Volume of First Runnings [Gal]
+TL = Trub Loss [Gal]     ;TMT = Target Mash Temp [F]     ;AW = Addition Water in Mash [Gal]
+SV = Sparge Volume [Gal] ;TWN = Total Water Needed [Gal] ;PBV = Pre Boil Volume [Gal]
+IT = Infusion Temp [F]   ;MOV = Mash Out Volume [Gal]    ;SVPMO = Sparge Volume Post Mash Out [Gal]
+MD = Mash Duration [Min] ;FL = Fermentation Loss [Gal]
+```
+
+```{r Equations for Mash Temps and Volumes, echo=TRUE, eval=FALSE}
+# First we need to take batch size (BS) and inflate it by trub loss and fermentation loss
+# Since we know the water will shrink after it cools, we then add on extra water to compensate (WS).
+# Finally we use the Evaporatoin Rate to compensate for water lost due to boil.
+# BT is in minutes so we divide by 60 to convert to hours.
+
+# This gives us the Pre Boil Volume
+PBV = ( (BS+(TL+FL))/(1-WS/100) ) / ( 1-(ER/100*(BT/60)) )
+
+# Mash volume is simpley your mash thickness desired scaled by your grain amount.
+MV = GB*(MT/4) # Convert to [Gal] for MT
+
+# Technically the volume from your first runnings is used the accurately determine grain absorption.
+# It also helps you find your equipment losses.
+# If you directly measure your VFR you can skip this theoretical calculation and plug it into the next 
+VFR = MV + AW - (GB*GA) - EL # Theoretical EQ...we could just measure
+
+# In the end our pre boil volume minus our first runnings is the water we need to add to hit our batch size
+SV = PBV - VFR
+
+# Using a thermodynamic equation we can solve for the temperature that the mash volume needs to be
+# in order to hit the the target mash temperature
+IT = (0.2/MT)*(TMT-GT) + TMT
+
+# If you so desire you can pull a specific volume from the SV and bring to a boil.
+# Using this volume you can bring the mash sitting at TMT to mash out or 170 degrees fahrenheit.
+# The equation to find this volume is below.
+MOV = ( (170 - TMT)*(0.2*GB + MV) )/(212 - 170)
+
+# Sparge Volume Post Mash Out
+# May or may not be necessary; This is what is left of SV if we mash out with MOV
+# We could just not pour in all of MOV and just sparge slowly with all of SV
+# as long as it is hot enough to reach mash out.
+# If not, we can heat with stove top to reach mash out.
+SVPMO = SV - MOV 
+
+# Also for convenience this is the Total Water Needed to achieve the batch size
+TWN = MV + SV
+
+```
+
+Our recipe came out as follows:
+
+```{r Mash, echo= FALSE, eval=TRUE}
+# Initialize certain constants
+BS <- batch_size
+WS <- water_shrinkage
+TL <- trub_loss
+FL <- fermentation_loss
+EL <- equip_loss
+BT <- max(hops$Boil_Time) # Or hard code a longer mash time if that is the case
+AW <- 0 # [Gal] Add if needed
+ER <- evap_rate
+MT <- 1.25 # Adjust if desired
+GB <- sum(fermentables$Lbs)
+GA <- 0.6 # https://byo.com/bock/item/410-calculating-water-usage-advanced-brewing uses 0.5
+          # but to be conservative we will assume 0.6
+
+GT <- 70
+TMT <- 157
+MD <- 60
+
+
+
+PBV = ( (BS+(TL+FL))/(1-WS/100) ) / ( 1-(ER/100*(BT/60)) )
+
+MV = GB*(MT/4) # Convert to [Gal] for MT
+
+VFR = MV + AW - (GB*GA/4) - EL # Theoretical EQ...we could just measure
+
+SV = PBV - VFR
+
+IT = (0.2/MT)*(TMT-GT) + TMT
+
+MOV = ( (170 - TMT)*(0.2*GB + MV) )/(212 - 170)
+
+SVPMO = SV - MOV # May or may not be necessary; This is what is left of SV if we mash out with MOV
+                 # We could just not pour in all of MOV and just sparge slowly with all of SV
+                 # as long as it is hot enough to reach mash out.
+                 # Even if not we can heat with stove top.
+
+TWN = MV + SV
+
+mash <- data.frame(
+  Mash_Thickness = MT,
+  Sacc_Rest_Temp = TMT,
+  Mash_Duration = MD,
+  Init_Grain_Temp = GT,
+  Infusion_Temp = IT,
+  Mash_Volume_Gal = MV,
+  Sparge_Vol = SV,
+  Mash_Out_Vol = MOV
+)
+
+
+kable(mash)
+```
+
+## Water Chemistry
+
+Formulas and constants from [here](http://www.ezwatercalculator.com/)  
+Bostons Water Supply Chemistry [link](https://www.brewersfriend.com/homebrew/water-profiles/)
+
+```{r Water}
+
+init_Ca <- 4
+init_Mg <- 1
+init_Na <- 32
+init_Cl <- 23
+init_SO4 <- 6
+init_HCO3_CaCO3 <- 40
+
+lactic_acid_percent <- 88 # %
+lactic_acid_ml <- 0
+acidulated_malt_acid_percent <- 2
+acidulated_malt_oz <- 0
+
+ph_down_gypsum_CaSO4 <- 0
+ph_down_Cal_Chl_CaCl2 <- 0
+ph_down_epsom_salt_MgSO4 <- 0
+ph_up_slaked_lime_CaOH2 <- 0
+ph_up_baking_soda_NaHCO3 <- 0
+ph_up_chalk_CaCO3 <- 0
+
+# Post mash additons
+mash_Ca <- init_Ca + 
+          (ph_up_chalk_CaCO3*105.89 +
+           ph_down_gypsum_CaSO4*60 +
+           ph_down_Cal_Chl_CaCl2*72 + 
+           ph_up_slaked_lime_CaOH2*143)/ifelse(MV == 0, 1, MV)
+
+mash_Mg <- init_Mg + 
+          (ph_down_epsom_salt_MgSO4*24.6)/ifelse(MV == 0, 1, MV)
+
+mash_Na <- init_Na + 
+          (ph_up_baking_soda_NaHCO3*72.3)/ifelse(MV == 0, 1, MV)
+
+mash_Cl <- init_Cl + 
+          (ph_down_Cal_Chl_CaCl2*127.47)/ifelse(MV == 0, 1, MV)
+
+mash_SO4 <- init_SO4 + 
+          (ph_down_gypsum_CaSO4*147.4 +
+           ph_down_epsom_salt_MgSO4*103)/ifelse(MV == 0, 1, MV)
+
+
+dist_water_ph_look_up_table <- data.frame(EZ_Water_Code = 0:11,
+                                          Distilled_Water_pH = c(0,
+                                                                 0,
+                                                                 5.7,
+                                                                 5.79,
+                                                                 5.77,
+                                                                 5.43,
+                                                                 5.75,
+                                                                 6.04,
+                                                                 5.56,
+                                                                 5.70,
+                                                                 NA,
+                                                                 4.71))
+
+
+fermentables <- left_join(x = fermentables, y = dist_water_ph_look_up_table, by = "EZ_Water_Code")
+
+# Calculates the distilled water ph from crystal malts which are code 10
+fermentables <- mutate(fermentables, Distilled_Water_pH = ifelse(EZ_Water_Code == 10, 5.22-0.00504*SRM,Distilled_Water_pH))
+
+# Calculating Effective Alkalinity
+if(MV == 0){
+  
+  effective_alkalinity <- 0
+    
+}else{
+
+# There is this radio button for Bicarbonate versus Alkalinity
+# We can't see how it works in the sheet.
+
+ratio = 50/61
+#ratio = 1
+
+effective_alkalinity <- (init_HCO3_CaCO3*ratio+
+  (
+    (ph_up_chalk_CaCO3*130)+
+    (ph_up_baking_soda_NaHCO3*157)-
+    (176.1*lactic_acid_percent/100*lactic_acid_ml*2)-
+    (4160.4*acidulated_malt_acid_percent/100*acidulated_malt_oz)*2.5+
+    (ph_up_slaked_lime_CaOH2)*357
+  )/(ifelse(MV == 0,1,MV)))
+
+}
+  
+# Calculating Residual Alkalinity
+
+if(MV == 0){
+  residual_alkalinity <- 0
+}else{
+  residual_alkalinity <- effective_alkalinity - ((mash_Ca/1.4)+(mash_Mg/1.7))
+            
+}
+
+# Estimated Room-Temp Mash pH
+if(MV == 0){
+  estimated_room_temp_mash_ph <- 0
+}else{
+  estimated_room_temp_mash_ph <- fermentables %>%
+                                 mutate(Lbs_x_distWaterPH = Lbs*Distilled_Water_pH) %>%
+                                 select(Lbs_x_distWaterPH) %>%
+                                 sum()/ifelse(GB == 0, 1, GB) %>%
+                                 as.numeric() + (0.1085*MV/ifelse(GB == 0, 1, GB)+0.013)*residual_alkalinity/50
+}
+
+# Choose to hard code or not.
+# actual_ph <- 5.5
+actual_ph <- estimated_room_temp_mash_ph
+
+chemistry <- data.frame(
+  recipe_id = 1,
+  Init_Ca = init_Ca,
+  Init_Mg = init_Mg,
+  Init_Na = init_Na,
+  Init_Cl = init_Cl,
+  Init_SO4 = init_SO4,
+  Init_HCO3_CaCO3 = init_HCO3_CaCO3,
+  Actual_pH = actual_ph,
+  Effective_Alkalinity = effective_alkalinity,
+  Residual_Alkalinity = residual_alkalinity,
+  pH_DOWN_Gypsum_CaSO4 = ph_down_gypsum_CaSO4,
+  pH_DOWN_Cal_Chl_CaCl2 = ph_down_Cal_Chl_CaCl2,
+  pH_DOWN_Epsom_Salt_MgSO4 = ph_down_epsom_salt_MgSO4,
+  pH_UP_Slaked_Lime_CaOH2 = ph_up_slaked_lime_CaOH2,
+  pH_UP_Baking_Soda_NaHCO3 = ph_up_baking_soda_NaHCO3,
+  pH_UP_Chalk_CaCO3 = ph_up_chalk_CaCO3)
+
+print(paste("Effective Alkalinity:", effective_alkalinity))
+print(paste("Residual Alkalinity:", residual_alkalinity))
+print(paste("Estimated Room-Temp Mash pH:", estimated_room_temp_mash_ph))
+print(paste("Desired Room-Temp Mash pH: 5.4 - 5.6"))
+
+kable(chemistry)
+
+```
+
+ 
+## Yeast
+```{r Yeast, echo= FALSE}
+
+# Using style OG
+# degree_plato <- (recipe$OG-1)*1000/4
+# Using current predicted OG
+degree_plato <- (predicted_og-1)*1000/4
+
+liter_batch_size <- batch_size*3.785 # Liters in a gallon
+
+cell_density <- (1e9*degree_plato*liter_batch_size)
+
+# Assumed that you want the right cell density and made it happen
+pitched_cells <- cell_density
+
+# IF otherwise, specify
+
+# pitched_cells <- 150
+
+yeast <- data.frame(
+  Yeast_Strain = "Fermentis Safale US-05",
+  Attenuation = 81,
+  Initial_Cell_Count_Billions = cell_density/1e9,
+  Pitched_Cells_Billions = pitched_cells/1e9,
+  Liters_For_Starter = 0,
+  Time_For_Starter = 0
+)
+
+
+predicted_fg <- predicted_og-(yeast$Attenuation/100)*(predicted_og-1)
+predicted_abv <- (1.05/0.79)*((predicted_og-predicted_fg)/predicted_fg)*100
+
+print(paste("Predicted ABV:", predicted_abv))
+
+kable(yeast)
+```
+
+
+```{r Code to solve for starter volume needed, eval=FALSE, echo=TRUE}
+# Code to solve for starter volume needed
+
+I have some code that will bootleg this calculation and or some rules of thumb for starters...
+
+```
+
+
+## Fermentation
+
+```{r Fermentation, echo= FALSE}
+
+time1 <- data.frame(Temp = 62, Days = 7)
+time2 <- data.frame(Temp = 70, Days = 7)
+time3 <- data.frame(Temp = 60, Days = 7)
+time4 <- data.frame(Temp = 60, Days = 7)
+
+fermentation <- rbind(time1,time2,time3,time4)
+
+kable(fermentation)
+```
+
+
+
+
+
+
+
+
+
+
+
+
