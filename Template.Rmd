@@ -327,6 +327,18 @@ mash_SO4 <- init_SO4 +
           (ph_down_gypsum_CaSO4*147.4 +
            ph_down_epsom_salt_MgSO4*103)/ifelse(MV == 0, 1, MV)
 
+# For the distilled water ph look up table
+# 1 - Select Grains
+# 2 - 2-Row
+# 3 - 6-Row
+# 4 - Maris Otter
+# 5 - Munich
+# 6 - Pilsner
+# 7 - Wheat
+# 8 - Vienna
+# 9 - Other
+# 10 - Crystal Malt
+# 11 - Roasted/Toasted
 
 dist_water_ph_look_up_table <- data.frame(EZ_Water_Code = 0:11,
                                           Distilled_Water_pH = c(0,
