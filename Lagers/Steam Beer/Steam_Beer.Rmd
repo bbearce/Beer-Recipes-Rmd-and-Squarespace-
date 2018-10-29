@@ -62,7 +62,7 @@ recipe <- data.frame(
   Recipe = "Steam Burr",
   Style = "California Common",
   Date = '7/1/2018',
-  OG = 1.051,
+  OG = 1.052,
   FG = 1.013 
 )
 
@@ -74,21 +74,21 @@ kable(recipe)
 [Link to Potential Gravity From Grain Values](http://beersmith.com/Grains/Grains/GrainList.htm)
 
 ```{r Fermentables, echo= FALSE}
-Ing1 <- data.frame(Grains = "German Pils Malt", 
-                   Lbs = 8, 
-                   Potential_SG = 1.037,
+Ing1 <- data.frame(Grains = "US 2 Row", 
+                   Lbs = 8.5, 
+                   Potential_SG = 1.036,
                    EZ_Water_Code = 6,
                    SRM = 2.0
                    )
 Ing2 <- data.frame(Grains = "Crystal malt (40 °L)", 
-                   Lbs = 1, 
+                   Lbs = 0.8, 
                    Potential_SG = 1.034,
                    EZ_Water_Code = 10,
                    SRM = 40.0
                    )
 
 Ing3 <- data.frame(Grains = "Victory", 
-                   Lbs = 0.5, 
+                   Lbs = 0.6, 
                    Potential_SG = 1.034,
                    EZ_Water_Code = 8,
                    SRM = 25.0
@@ -127,8 +127,9 @@ print(paste("Predicted OG:",predicted_og))
 ```{r Hops, echo= FALSE}
 
 hop1 <- data.frame(Hop = "Northern Brewer", Hop_Type = "pellet", Alpha_Acid_Percent = 0.08, Weight_Oz = 0.75, Boil_Time = 60)
-hop2 <- data.frame(Hop = "Northern Brewer", Hop_Type = "pellet", Alpha_Acid_Percent = 0.08, Weight_Oz = 0.75, Boil_Time = 20)
-hop3 <- data.frame(Hop = "Northern Brewer", Hop_Type = "pellet", Alpha_Acid_Percent = 0.08, Weight_Oz = 1.0, Boil_Time = 0)
+hop2 <- data.frame(Hop = "Northern Brewer", Hop_Type = "pellet", Alpha_Acid_Percent = 0.08, Weight_Oz = 1.00, Boil_Time = 15)
+hop3 <- data.frame(Hop = "Northern Brewer", Hop_Type = "pellet", Alpha_Acid_Percent = 0.08, Weight_Oz = 0.50, Boil_Time = 0)
+
 
 hops <- rbind(hop1,hop2,hop3)
 
@@ -252,7 +253,7 @@ GA <- 0.6 # https://byo.com/bock/item/410-calculating-water-usage-advanced-brewi
           # but to be conservative we will assume 0.6
 
 GT <- 70
-TMT <- 148
+TMT <- 152
 MD <- 60
 
 
@@ -496,11 +497,20 @@ I have some code that will bootleg this calculation and or some rules of thumb f
 
 ```{r Fermentation, echo= FALSE}
 
-time1 <- data.frame(Temp = 60, Days = 21)
-time2 <- data.frame(Temp = 45, Days = 7)
+time1 <- data.frame(Temp = 60, Days = 7)
+time2 <- data.frame(Temp = 64, Days = 1)
+time3 <- data.frame(Temp = 68, Days = 1)
+time4 <- data.frame(Temp = 72, Days = 1)
+time5 <- data.frame(Temp = 68, Days = 1)
+time6 <- data.frame(Temp = 64, Days = 1)
+time7 <- data.frame(Temp = 60, Days = 16)
+time8 <- data.frame(Temp = 56, Days = 1)
+time9 <- data.frame(Temp = 52, Days = 1)
+time10 <- data.frame(Temp = 48, Days = 1)
+time11 <- data.frame(Temp = 44, Days = 11)
 
 
-fermentation <- rbind(time1,time2)
+fermentation <- rbind(time1,time2,time3,time4,time5,time6,time7,time8,time9,time10,time11)
 
 kable(fermentation)
 ```

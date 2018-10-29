@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
+title: "American IPA"
 author: 'Authors: BB, KS'
-date: Sys.Date()
+date: 10/28/2018
 output:
   html_document:
     toc: true
@@ -24,24 +24,25 @@ body {background-color: #FFFFFF;}
 
 #Style Summary:
 
-* OG: 1.035 - 1.040  
-* FG: 1.010 - 1.015  
-* IBUs: 10 - 25  
-* SRM: 9 - 17   
-* ABV: 3.2 - 3.9%  
+* OG:  1.056 - 1.070
+* FG:  1.008 - 1.014
+* ABV: 5.5 - 7.5
+* IBU: 40 - 70
+* SRM: 6 - 14
 
-More details can be found here: [BJCP Style Details](https://www.bjcp.org/2008styles/style09.php)  
+More details can be found here: [BJCP Style Details](https://beerrecipes.org/BJCP-2015-Style/65/21a-american-ipa.html)  
 
 A small excerpt from the source about this style:    
-*"Overall Impression: Cleanly malty with a drying finish, perhaps a few esters, and on occasion a faint bit of peaty earthiness (smoke). Most beers finish fairly dry considering their relatively sweet palate, and as such have a different balance than strong Scotch ales."* - BJCP -
+*"Overall Impression: A decidedly hoppy and bitter, moderately strong American pale ale, showcasing modern American or New World hop varieties. The balance is hop-forward, with a clean fermentation profile, dryish finish, and clean, supporting malt allowing a creative range of hop character to shine through."* - BJCP -
 
 ```{r Kitchen Constants, echo = FALSE}
-evap_rate = 10 # Percent
+evap_rate = 15 # Percent
 mash_eff = 73.5 # Percent
-trub_loss = 0.125 # Gal
+mash_tun_dead_space = 0 # Gal Mash Tun Dead Space
+kettle_dead_space = 0.5 # Gal Kettle Deal Space
+lauter_tun_dead_space = 0.5 # Gal Lauter Tun Dead Space
+fermentation_tank_loss = 0.25 # Gal Fermentation Tank Loss
 water_shrinkage = 4 # Percent
-equip_loss = 0.125 # Gal
-fermentation_loss = 0.25 # 1.0325 # Gal...I know we "documented" this, but it's hard to believe
 batch_size = 5 # Gal
 ```
 
@@ -49,20 +50,21 @@ batch_size = 5 # Gal
 
 * Evaporation Rate = `r evap_rate`% 
 * Mash Efficiency = `r mash_eff`%  
-* Boil Kettle Dead Space = `r trub_loss` Gallons  
-* Lauter Tun Dead Space = `r equip_loss` Gallons   
-* Fermentation Loss = `r fermentation_loss` Gallons  
+* Mash Tun Dead Space = `r mash_tun_dead_space` Gallons  
+* Boil Kettle Dead Space = `r kettle_dead_space` Gallons  
+* Lauter Tun Dead Space = `r lauter_tun_dead_space` Gallons   
+* Fermentation Loss = `r fermentation_tank_loss` Gallons  
 
 \* Small Note: *we will use math mainly from "Designing Great Beers" by Ray Daniels as it is intuitive and easy to follow for the modern day home brewer.*
 
 
 ```{r Recipe, echo= FALSE}
 recipe <- data.frame(
-  Recipe = "Untitled",
-  Style = "Untitled",
-  Date = Sys.Date(),
-  OG = 1.050,
-  FG = 1.010 
+  Recipe = "Juicy American IPA",
+  Style = "American IPA",
+  Date = '10_28_2018',
+  OG = 1.063,
+  FG = 1.011 
 )
 
 kable(recipe)
@@ -73,20 +75,15 @@ kable(recipe)
 [Link to Potential Gravity From Grain Values](http://beersmith.com/Grains/Grains/GrainList.htm)
 
 ```{r Fermentables, echo= FALSE}
-Ing1 <- data.frame(Grains = "British Pale Ale Malt (3.5 °L)", 
-                   Lbs = 6.5, 
+Ing1 <- data.frame(Grains = "Pale Malt (2 Row) US", 
+                   Lbs = 12.31, 
                    Potential_SG = 1.036,
                    EZ_Water_Code = 2,
-                   SRM = 0.0
-                   )
-Ing2 <- data.frame(Grains = "British Pale Ale Malt (3.5 °L)", 
-                   Lbs = 6.5, 
-                   Potential_SG = 1.036,
-                   EZ_Water_Code = 2,
-                   SRM = 0.0
+                   SRM = 2.0
                    )
 
-fermentables <- rbind(Ing1,Ing2)
+
+fermentables <- rbind(Ing1)
 tot_Lbs <- sum(fermentables$Lbs)
 
 fermentables <- mutate(fermentables, Percent = Lbs/tot_Lbs)
@@ -115,12 +112,22 @@ print(paste("Predicted OG:",predicted_og))
 ```
 
 ## Hops
+So in the hop profile I want to avoid the resinous part of the hops addition or contribution to flavor. I think it is harsh. In general I want citrusy and fruity hops, but we will boil them to get the bitterness to come through. 
+
+IBU is supposed to be in the range of 40-70. Here are some beers to model ours after:  
+* Sierra Nevada Pale Ale: 38 IBU  
+* Heady Topper: 75 IBU  
+* Dogfish Head 90 min IPA: 90 IBU  
+
+Citra boasts 60-70% of its hop oil volume in mercene which is known for its highly flavorful citrus and fruit flavors and or aromas. We will dry hop post fermentation so the yeast do not interfere with its flavor. Mosaic is also pretty flavorful (48-55% Mercene) and we will use it to bitter the beer. I believe that the isomerization of the hop oils when you boil leaves you with only bitterness flavor. Instead I intend to boil the hops for only 30 minutes. The achieve the correct IBU level, I will just use more hops. I believe that by not being conservative with the hop amount, I will achieve plenty of bitterness, while keeps the integrity of the hop flavors. After reading a bit about boiling hops, I’ve come the the conclusion that most flavor and or aroma is lost after boiling and it would never really matter what hop you used for boiling. Since I’m not trying to make the hoppiest beer in the world and flavor matters, keeping the characteristics of these hops intact is paramount. 
+
 ```{r Hops, echo= FALSE}
 
-hop1 <- data.frame(Hop = "East Kent Golding", Hop_Type = "pellet", Alpha_Acid_Percent = 0.055, Weight_Oz = 0.75, Boil_Time = 60)
-hop2 <- data.frame(Hop = "East Kent Golding", Hop_Type = "pellet", Alpha_Acid_Percent = 0.055, Weight_Oz = 0.75, Boil_Time = 60)
+hop1 <- data.frame(Hop = "Mozaic", Hop_Type = "pellet", Alpha_Acid_Percent = 12.25/100, Weight_Oz = 2, Boil_Time = 30)
+hop2 <- data.frame(Hop = "Citra", Hop_Type = "pellet", Alpha_Acid_Percent = 12.5/100, Weight_Oz = 0.75, Boil_Time = 5)
+hop3 <- data.frame(Hop = "Citra", Hop_Type = "pellet", Alpha_Acid_Percent = 12.5/100, Weight_Oz = 0.75, Boil_Time = 0)
 
-hops <- rbind(hop1,hop2)
+hops <- rbind(hop1,hop2,hop3)
 
 # values from Designing Great Beers pg. 80
 
@@ -210,7 +217,7 @@ Our recipe came out as follows:
 
 MTDS = mash_tun_dead_space
 LTDS = lauter_tun_dead_space
-KDS = kettle_deal_space
+KDS = kettle_dead_space
 FTL = fermentation_tank_loss
 BS <- batch_size
 WS <- water_shrinkage
@@ -285,9 +292,9 @@ lactic_acid_ml <- 0
 acidulated_malt_acid_percent <- 2
 acidulated_malt_oz <- 0
 
-ph_down_gypsum_CaSO4 <- 0
-ph_down_Cal_Chl_CaCl2 <- 0
-ph_down_epsom_salt_MgSO4 <- 0
+ph_down_gypsum_CaSO4 <- 10
+ph_down_Cal_Chl_CaCl2 <- 5
+ph_down_epsom_salt_MgSO4 <- 5
 ph_up_slaked_lime_CaOH2 <- 0
 ph_up_baking_soda_NaHCO3 <- 0
 ph_up_chalk_CaCO3 <- 0
@@ -441,8 +448,8 @@ pitched_cells <- cell_density
 # pitched_cells <- 150
 
 yeast <- data.frame(
-  Yeast_Strain = "Fermentis Safale US-05",
-  Attenuation = 81,
+  Yeast_Strain = "SafAle US-05",
+  Attenuation = 72,
   Initial_Cell_Count_Billions = cell_density/1e9,
   Pitched_Cells_Billions = pitched_cells/1e9,
   Liters_For_Starter = 0,
@@ -469,12 +476,14 @@ I have some code that will bootleg this calculation and or some rules of thumb f
 
 ## Fermentation
 
+We need to keep the hop character in the beer. This means we need to ferment somewhat cold for an ale or rather on the cold side of the yeast fermentation temperature range. Safale US-05 says 59 - 71.6 degrees fahrenheit. We will shoot for 59. As for any variation. The first week will be tightly controlled. Then we we will put a Kolsch in the fridge and the temp of the beer will probably average out to 70 degrees F for the remaining 3 weeks. 
+
 ```{r Fermentation, echo= FALSE}
 
-time1 <- data.frame(Temp = 62, Days = 7)
+time1 <- data.frame(Temp = 59, Days = 7)
 time2 <- data.frame(Temp = 70, Days = 7)
-time3 <- data.frame(Temp = 60, Days = 7)
-time4 <- data.frame(Temp = 60, Days = 7)
+time3 <- data.frame(Temp = 70, Days = 7)
+time4 <- data.frame(Temp = 70, Days = 7)
 
 fermentation <- rbind(time1,time2,time3,time4)
 

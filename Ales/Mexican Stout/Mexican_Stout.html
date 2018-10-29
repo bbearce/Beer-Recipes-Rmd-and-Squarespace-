@@ -143,15 +143,12 @@ body {background-color: #FFFFFF;}
 <h1>Style Summary:</h1>
 <p><em>If there’s one thing we can say without hesitation, it’s that imperial stout is expected to be big.</em> -BYO-</p>
 <ul>
-<li>OG: 1.075 - 1.115<br />
+<li>OG: 1.100</li>
+<li>FG: 1.030</li>
+<li>IBUs: 60; BU:GU = 0.6</li>
+<li>SRM: 500 - Black<br />
 </li>
-<li>FG: 1.018 - 1.030<br />
-</li>
-<li>IBUs: 50 - 90<br />
-</li>
-<li>SRM: 30 - 40<br />
-</li>
-<li>ABV: 8.0 - 12.0%</li>
+<li>ABV: 10.0%</li>
 </ul>
 <p>More details can be found here: <a href="https://www.bjcp.org/docs/2015_Guidelines_Beer.pdf">BJCP Style Details</a></p>
 <p>A small excerpt from the source about this style:<br />
@@ -166,7 +163,7 @@ body {background-color: #FFFFFF;}
 <h1>Kitchen Constants:</h1>
 <ul>
 <li>Evaporation Rate = 10%</li>
-<li>Mash Efficiency = 73.5%<br />
+<li>Mash Efficiency = 60%<br />
 </li>
 <li>Boil Kettle Dead Space = 0.125 Gallons<br />
 </li>
@@ -189,9 +186,9 @@ body {background-color: #FFFFFF;}
 <tr class="odd">
 <td align="left">Mexican Stout</td>
 <td align="left">Imperial Stout</td>
-<td align="left">2018-04-24</td>
-<td align="right">1.09</td>
-<td align="right">1.015</td>
+<td align="left">2018-07-07</td>
+<td align="right">1.1</td>
+<td align="right">1.03</td>
 </tr>
 </tbody>
 </table>
@@ -204,7 +201,7 @@ body {background-color: #FFFFFF;}
 <p><em>“I like to start the grist with about 80–85 percent of a good bready base malt (Maris Otter is a good choice), and then fill in the gaps with a variety of light and dark crystals, some brown malt, and a lighter chocolate malt before capping it off with about 1–2 percent of an intense black malt (black patent or roasted barley)”</em> -BYO-</p>
 <p><em>“The most important part of brewing an imperial stout is the ingredients. I use only English Maris Otter for a base malt. We also layer our toasty and biscuity malts as well as our Cara malts. One is good but two, or three different malts in the same family are better — think complexity!”</em> -BYO-</p>
 <p><em>“Quality malts in general are best but the dark roasted grains are the most important to an imperial stout. The dark grains give the beer its chocolate and coffee flavors while the rest of the grains contribute to the final flavor. My opinion is that no less than seven malts should be used so that the complexity will not be compromised.”</em> -BYO-</p>
-<p><a href="http://beersmith.com/Grains/Grains/GrainList.htm">Link to Potential Gravity From Grain Values</a></p>
+<p><a href="http://beersmith.com/Grains/Grains/GrainList.htm">Link to Potential Gravity From Grain Values</a> <a href="http://www.brewunited.com/grain_database.php">More</a></p>
 <table>
 <thead>
 <tr class="header">
@@ -218,20 +215,52 @@ body {background-color: #FFFFFF;}
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">British Pale Ale Malt (3.5 °L)</td>
-<td align="right">6.5</td>
-<td align="right">1.036</td>
+<td align="left">Maris Otter 3.5 °L</td>
+<td align="right">20.0</td>
+<td align="right">1.038</td>
 <td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0.5</td>
+<td align="right">4</td>
+<td align="right">0.8333333</td>
 </tr>
 <tr class="even">
-<td align="left">British Pale Ale Malt (3.5 °L)</td>
-<td align="right">6.5</td>
-<td align="right">1.036</td>
+<td align="left">Cara Munich 71 °L</td>
+<td align="right">0.5</td>
+<td align="right">1.037</td>
 <td align="right">2</td>
 <td align="right">0</td>
+<td align="right">0.0208333</td>
+</tr>
+<tr class="odd">
+<td align="left">Special B 120 °L</td>
+<td align="right">1.0</td>
+<td align="right">1.030</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0.0416667</td>
+</tr>
+<tr class="even">
+<td align="left">Roasted Barley 500 °L</td>
+<td align="right">1.5</td>
+<td align="right">1.025</td>
+<td align="right">2</td>
+<td align="right">500</td>
+<td align="right">0.0625000</td>
+</tr>
+<tr class="odd">
+<td align="left">Pale Chocolate Malt 200 °L</td>
 <td align="right">0.5</td>
+<td align="right">1.033</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0.0208333</td>
+</tr>
+<tr class="even">
+<td align="left">Chocolate Malt 400 °L</td>
+<td align="right">0.5</td>
+<td align="right">1.028</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0.0208333</td>
 </tr>
 </tbody>
 </table>
@@ -246,7 +275,7 @@ fermentables &lt;- fermentables %&gt;% mutate(Ingredient_Gravity = Lbs*(Potentia
 # Predicted OG
 predicted_og &lt;- 1+(sum(fermentables$Ingredient_Gravity)/batch_size/1000)
 print(paste(&quot;Predicted OG:&quot;,predicted_og))</code></pre>
-<pre><code>## [1] &quot;Predicted OG: 1.068796&quot;</code></pre>
+<pre><code>## [1] &quot;Predicted OG: 1.10518&quot;</code></pre>
 </div>
 <div id="hops" class="section level2">
 <h2>Hops</h2>
@@ -258,6 +287,8 @@ print(paste(&quot;Predicted OG:&quot;,predicted_og))</code></pre>
 <p><em>“The boil is pretty basic. It is up to the individual brewer, but in my experience 70 to 90 minutes is sufficient. As for boil-overs, they are always a concern — just pay attention and do not rush the boil and you should be fine.”</em> -BYO-</p>
 <p><em>“I typically do two hop infusions in an imperial stout brewing session. One at about 60 minutes left in the boil and one at one minute left in the boil. The 60 minute addition should be between 2/3 and 4/5 of all the IBUs for the beer. The one minute addition should comprise the rest. In an imperial stout, I do not think that the hops are meant to stand out. They should play a supporting role to the dark malt flavors and aromas and keep the beer from being cloying.”</em> -BYO-</p>
 <p><em>“Fifty to 60 IBUs is a lot of hops, but in this beer it is for balance.”</em> -BYO-</p>
+<p><em>“BU:GU = 0.6-0.8”</em> -BYO-</p>
+<p>Kyle66% of hop IBU from bittering hop</p>
 <table>
 <thead>
 <tr class="header">
@@ -272,26 +303,26 @@ print(paste(&quot;Predicted OG:&quot;,predicted_og))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">East Kent Golding</td>
+<td align="left">Northern Brewer</td>
 <td align="left">pellet</td>
-<td align="right">0.055</td>
-<td align="right">0.75</td>
+<td align="right">0.085</td>
+<td align="right">1.4</td>
 <td align="right">60</td>
-<td align="right">0.3</td>
-<td align="right">16.94297</td>
+<td align="right">0.30</td>
+<td align="right">41.90882</td>
 </tr>
 <tr class="even">
-<td align="left">East Kent Golding</td>
+<td align="left">Northern Brewer</td>
 <td align="left">pellet</td>
-<td align="right">0.055</td>
-<td align="right">0.75</td>
-<td align="right">60</td>
-<td align="right">0.3</td>
-<td align="right">16.94297</td>
+<td align="right">0.085</td>
+<td align="right">1.2</td>
+<td align="right">10</td>
+<td align="right">0.15</td>
+<td align="right">17.96092</td>
 </tr>
 </tbody>
 </table>
-<pre><code>## [1] &quot;Total IBU: 33.8859485548182&quot;</code></pre>
+<pre><code>## [1] &quot;Total IBU: 59.8697390077592&quot;</code></pre>
 </div>
 <div id="mash" class="section level2">
 <h2>Mash</h2>
@@ -320,9 +351,9 @@ print(paste(&quot;Predicted OG:&quot;,predicted_og))</code></pre>
 <td align="right">60</td>
 <td align="right">70</td>
 <td align="right">170.92</td>
-<td align="right">4.0625</td>
-<td align="right">4.233565</td>
-<td align="right">2.062202</td>
+<td align="right">7.5</td>
+<td align="right">2.446065</td>
+<td align="right">3.807143</td>
 </tr>
 </tbody>
 </table>
@@ -385,7 +416,7 @@ Bostons Water Supply Chemistry <a href="https://www.brewersfriend.com/homebrew/w
 <p><em>“Finally, choose a yeast with a high alcohol tolerance and some clean ester character. I’d avoid the spicier Belgian strains entirely in favor of some of the heritage British strains or the Wyeast 1007 (German Ale) yeast. By all means, choose a yeast that will contribute some flavor, but not one that will compete with the rest of the recipe.”</em> -BYO-</p>
 <p><em>“I can only recommend one yeast and that yeast is Wyeast 1028. I am familiar with this strain so I know what it will do. In my opinion it is the best yeast for the job. The best pitching temperature is between 66–72 ºF (19–22 ºC). Any ale strain should produce good results in this range. These beers are notoriously violent fermenters so hang on and enjoy a wild ride!”</em> -BYO-</p>
 <p><em>“I add a lager yeast at the end of fermentation for aging purposes. Dry-hopping is optional and it only takes a small amount as the beer has a lot of alcohol and body.”</em> -BYO-</p>
-<pre><code>## [1] &quot;Predicted ABV: 7.31089300594299&quot;</code></pre>
+<pre><code>## [1] &quot;Predicted ABV: 9.48640030208325&quot;</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -399,10 +430,10 @@ Bostons Water Supply Chemistry <a href="https://www.brewersfriend.com/homebrew/w
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Fermentis Safale US-05</td>
-<td align="right">81</td>
-<td align="right">325.4911</td>
-<td align="right">325.4911</td>
+<td align="left">Danstar Nottingham Ale Dry Yeast</td>
+<td align="right">70</td>
+<td align="right">497.6329</td>
+<td align="right">497.6329</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
